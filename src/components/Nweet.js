@@ -1,4 +1,4 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useState } from "react";
 
 const Nweet = ({ nweetObj, isOwner }) => {
@@ -9,6 +9,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     const ok = window.confirm("Are you sure you want to delete this tweet?");
     if (ok) {
       await dbService.doc(`tweets/${nweetObj.id}`).delete();
+      await storageService.refFromURL(nweetObj.attachmentUrl).delete();
     }
   };
 
@@ -32,6 +33,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
   return (
     <div>
       <h4>{nweetObj.text}</h4>
+      {nweetObj.attachmentUrl && (
+        <img src={nweetObj.attachmentUrl} width="50px" height="50px" alt="" />
+      )}
       {editing ? (
         <>
           {isOwner && (
