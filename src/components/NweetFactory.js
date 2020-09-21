@@ -9,12 +9,11 @@ const NweetFactory = ({ userObj }) => {
   const [attachment, setAttachment] = useState("");
 
   const onSubmit = async (event) => {
+    event.preventDefault();
     if (nweet === "") {
       return;
     }
-    event.preventDefault();
     let attachmentUrl = "";
-    console.log(attachment);
     if (attachment !== "") {
       const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
       const response = await attachmentRef.putString(attachment, "data_url"); // upload to storage
@@ -68,7 +67,7 @@ const NweetFactory = ({ userObj }) => {
         />
         <input type="submit" value="&rarr;" className="factoryInput__arrow" />
       </div>
-      <label for="attach-file" className="factoryInput__label">
+      <label htmlFor="attach-file" className="factoryInput__label">
         <span>Add photos</span>
         <FontAwesomeIcon icon={faPlus} />
       </label>
